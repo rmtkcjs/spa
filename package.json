@@ -1,0 +1,80 @@
+{
+  "name": "@repository-settings/app",
+  "version": "0.0.0-semantically-released",
+  "description": "Pull Requests for GitHub repository settings",
+  "repository": "github:repository-settings/app",
+  "type": "module",
+  "main": "./index.js",
+  "exports": "./index.js",
+  "scripts": {
+    "dev": "nodemon",
+    "start": "probot run ./index.js",
+    "test": "npm-run-all --print-label --parallel lint:* --parallel test:*",
+    "lint:js": "prettier-standard --lint --check",
+    "lint:js:fix": "prettier-standard --format --lint",
+    "lint:lockfile": "lockfile-lint --path package-lock.json --type npm --validate-https --allowed-hosts npm",
+    "lint:engines": "ls-engines",
+    "lint:peer": "npm ls >/dev/null",
+    "lint:publish": "publint --strict",
+    "test:unit": "NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 jest 'test/unit/'",
+    "test:unit:watch": "npm run test:unit -- --watch",
+    "test:integration": "run-s 'test:integration:base -- --profile noWip'",
+    "test:integration:base": "NODE_OPTIONS=--enable-source-maps DEBUG=any cucumber-js test/integration",
+    "test:integration:debug": "DEBUG=test run-s test:integration",
+    "test:integration:wip": "run-s 'test:integration:base -- --profile wip'",
+    "test:integration:wip:debug": "DEBUG=test run-s 'test:integration:wip'",
+    "test:integration:focus": "run-s 'test:integration:base -- --profile focus'",
+    "generate:md": "remark . --output"
+  },
+  "author": "Brandon Keepers",
+  "license": "ISC",
+  "dependencies": {
+    "deepmerge": "4.3.1",
+    "js-yaml": "4.1.0",
+    "probot": "13.3.6"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "10.8.0",
+    "@form8ion/remark-preset": "1.0.2",
+    "@travi/any": "3.1.2",
+    "http-status-codes": "2.3.0",
+    "jest": "29.7.0",
+    "jest-when": "3.6.0",
+    "lockfile-lint": "4.14.0",
+    "ls-engines": "0.9.2",
+    "msw": "2.3.2",
+    "nodemon": "3.1.4",
+    "npm-run-all2": "6.2.2",
+    "prettier-standard": "16.4.1",
+    "publint": "0.2.9",
+    "smee-client": "2.0.1",
+    "standard": "17.1.0"
+  },
+  "standard": {
+    "env": [
+      "jest"
+    ]
+  },
+  "engines": {
+    "node": "^18.17 || >=20.6.1"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "nodemonConfig": {
+    "exec": "npm start",
+    "watch": [
+      ".env",
+      "."
+    ]
+  },
+  "files": [
+    "index.js",
+    "lib/"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "packageManager": "npm@10.8.2"
+}
